@@ -209,7 +209,7 @@ def train(model, tokenizer, train_ds, val_ds, output_dir: Path, epochs: int):
         eval_strategy           = "steps",
         eval_steps              = 20,
         save_strategy           = "steps",
-        save_steps              = 50,
+        save_steps              = 20,
         load_best_model_at_end  = True,
         metric_for_best_model   = "eval_loss",
         logging_steps           = 5,
@@ -352,11 +352,19 @@ def main():
     print(f"\nSFT LoRA adapter saved: {adapter_path}")
 
     # Smoke test
-    smoke_test(model, tokenizer)
+    try:
+        smoke_test(model, tokenizer)
+    except Exception as e:
+        print(f"\nSmoke test failed (non-fatal): {e}")
+        print("The adapter was saved successfully — you can test inference separately.")
 
     # GGUF export
     if not args.skip_gguf:
-        export_gguf(model, tokenizer, args.output)
+        try:
+            export_gguf(model, tokenizer, args.output)
+        except Exception as e:
+            print(f"\nGGUF export failed (non-fatal): {e}")
+            print("You can export GGUF separately later.")
 
     print("\n" + "=" * 60)
     print("  Phase 2 complete.")
