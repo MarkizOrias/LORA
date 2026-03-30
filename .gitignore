@@ -1,0 +1,19 @@
+# Model outputs (large, reproducible by running scripts)
+phi3-trading-lora/
+phi3-trading-sft/
+
+# Training logs
+*.log
+
+# Generated datasets
+trading_qa.jsonl
+
+# Caches
+unsloth_compiled_cache/
+__pycache__/
+
+# GGUF model exports
+*.gguf
+
+# Claude Code local state
+.claude/
